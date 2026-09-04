@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Service — KIBŌFUND</title>
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+      :root {
+        --bg: #101624;
+        --card: #131d30;
+        --card-hover: #162035;
+        --accent: #7aa2f7;
+        --accent-dim: rgba(122, 162, 247, 0.12);
+        --accent-border: rgba(122, 162, 247, 0.22);
+        --text: #c0caf5;
+        --text-muted: #7f85a1;
+        --text-dim: #565f89;
+        --moon: #e0e8ff;
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Saira", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── Stars canvas ──────────────────────────────────────────── */
+      #stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Moon glow ─────────────────────────────────────────────── */
+      .moon {
+        position: fixed;
+        top: 80px;
+        right: 12%;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 38% 38%,
+          #ffffff,
+          #c8d8ff 60%,
+          transparent 100%
+        );
+        box-shadow:
+          0 0 20px 6px rgba(200, 216, 255, 0.35),
+          0 0 60px 20px rgba(122, 162, 247, 0.12);
+        z-index: 0;
+        pointer-events: none;
+        animation: moonFloat 8s ease-in-out infinite;
+      }
+
+      @keyframes moonFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* ── Wave footer ────────────────────────────────────────────── */
+      .wave-wrap {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 160px;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .wave {
+        position: absolute;
+        bottom: 0;
+        left: -100%;
+        width: 300%;
+        height: 100%;
+      }
+
+      .wave svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .wave-1 {
+        animation: waveScroll 18s linear infinite;
+        opacity: 0.55;
+      }
+      .wave-2 {
+        animation: waveScroll 22s linear infinite reverse;
+        opacity: 0.35;
+      }
+      .wave-3 {
+        animation: waveScroll 28s linear infinite;
+        opacity: 0.2;
+      }
+
+      @keyframes waveScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(33.33%);
+        }
+      }
+
+      /* ── Layout ─────────────────────────────────────────────────── */
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 72px 24px 180px;
+      }
+
+      /* ── Header ─────────────────────────────────────────────────── */
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 36px;
+      }
+
+      .logo-icon {
+        width: 44px;
+        height: 44px;
+      }
+
+      .logo-name {
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 5px;
+        color: var(--text);
+        font-family: "Audiowide", sans-serif;
+      }
+
+      .logo-name .o {
+        color: var(--accent);
+        font-family: "Audiowide", sans-serif;
+        font-weight: 400;
+      }
+
+      .page-title {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 10px;
+      }
+
+      .last-updated {
+        font-size: 13px;
+        color: var(--text-dim);
+        letter-spacing: 1px;
+      }
+
+      /* ── Section cards ───────────────────────────────────────────── */
+      .section {
+        background: var(--card);
+        border: 1px solid var(--accent-border);
+        border-radius: 22px;
+        padding: 30px 32px;
+        margin-bottom: 16px;
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+      }
+
+      .section:hover {
+        border-color: rgba(122, 162, 247, 0.38);
+        background: var(--card-hover);
+      }
+
+      h2 {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 3.5px;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      h2::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--accent-border);
+        border-radius: 1px;
+      }
+
+      p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      ul {
+        list-style: none;
+        margin: 10px 0 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      ul li {
+        font-size: 15px;
+        color: var(--text-muted);
+        line-height: 1.65;
+        padding-left: 18px;
+        position: relative;
+      }
+
+      ul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.7;
+      }
+
+      /* ── Badge ───────────────────────────────────────────────────── */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        background: var(--accent-dim);
+        border: 1px solid var(--accent-border);
+        border-radius: 50px;
+        padding: 7px 16px;
+        margin-bottom: 16px;
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: 1.5px;
+        font-weight: 500;
+      }
+
+      .pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(0.7);
+        }
+      }
+
+      /* ── Contact link ────────────────────────────────────────────── */
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(122, 162, 247, 0.3);
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      a:hover {
+        color: #a5c0ff;
+        border-color: rgba(122, 162, 247, 0.7);
+      }
+
+      /* ── Footer ──────────────────────────────────────────────────── */
+      .footer {
+        text-align: center;
+        margin-top: 52px;
+        font-size: 12px;
+        color: var(--text-dim);
+        letter-spacing: 1.5px;
+        opacity: 0;
+      }
+
+      /* ── Responsive ──────────────────────────────────────────────── */
+      @media (max-width: 520px) {
+        .container {
+          padding: 56px 16px 160px;
+        }
+        .section {
+          padding: 24px 20px;
+        }
+        .moon {
+          width: 56px;
+          height: 56px;
+          top: 60px;
+          right: 8%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="stars"></canvas>
+    <div class="moon"></div>
+
+    <div class="wave-wrap">
+      <div class="wave wave-1">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <path
+            d="M0,80 C200,140 400,20 600,80 C800,140 1000,20 1200,80 L1200,160 L0,160 Z"
+            fill="#1a2540"
+          />
+        </svg>
+      </div>
+      <div class="wave wave-2">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <path
+            d="M0,90 C250,30 450,150 700,90 C900,30 1050,130 1200,90 L1200,160 L0,160 Z"
+            fill="#162035"
+          />
+        </svg>
+      </div>
+      <div class="wave wave-3">
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <path
+            d="M0,110 C300,60 500,150 800,110 C950,80 1100,140 1200,110 L1200,160 L0,160 Z"
+            fill="#131a2e"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Header -->
+      <div class="header" id="header">
+        <div class="logo">
+          <img class="logo-icon" src="logo.png" alt="KIBŌFUND logo" />
+          <span class="logo-name">KIB<span class="o">Ō</span>FUND</span>
+        </div>
+        <p class="page-title">Terms of Service</p>
+        <p class="last-updated">Last updated: September 4, 2026</p>
+      </div>
+
+      <!-- Overview -->
+      <div class="section">
+        <h2>Overview</h2>
+        <p>
+          These Terms of Service ("Terms") govern your use of KIBŌFUND (the
+          "App"), a personal budgeting app. By downloading, installing, or
+          using the App, you agree to these Terms. If you do not agree, please
+          do not use the App.
+        </p>
+      </div>
+
+      <!-- License to Use -->
+      <div class="section">
+        <h2>License to Use</h2>
+        <p>
+          We grant you a personal, non-exclusive, non-transferable, revocable
+          license to use the App on devices you own or control, for your own
+          personal, non-commercial budgeting purposes.
+        </p>
+        <p>
+          You may not copy, modify, distribute, sell, lease, reverse engineer,
+          or create derivative works from the App, except to the extent
+          permitted by applicable law.
+        </p>
+      </div>
+
+      <!-- Not Financial Advice -->
+      <div class="section">
+        <h2>Not Financial Advice</h2>
+        <p>
+          KIBŌFUND is a budgeting and expense-tracking tool. It does not
+          provide financial, investment, tax, or legal advice. Any
+          calculations, summaries, or insights the App shows are based
+          entirely on the figures you enter and are provided for your own
+          reference only.
+        </p>
+        <p>
+          You are solely responsible for your financial decisions. Consult a
+          qualified professional for advice specific to your situation.
+        </p>
+      </div>
+
+      <!-- Your Data -->
+      <div class="section">
+        <h2>Your Data</h2>
+        <div class="badge">
+          <span class="pulse-dot"></span>
+          Stored locally, on your device
+        </div>
+        <p>
+          KIBŌFUND runs entirely on your device. Your budgets, expenses,
+          goals, presets, and achievements are stored locally and are never
+          transmitted to us — see our
+          <a href="https://tokispherion.github.io/kiboufund-privacy/"
+            >Privacy Policy</a
+          >
+          for details.
+        </p>
+        <p>
+          Because your data lives only on your device,
+          <strong>you are responsible for backing it up</strong>. Uninstalling
+          the App, clearing app storage, or losing your device will permanently
+          erase your data. The App's export feature lets you save a backup
+          file to a location of your choosing — we recommend using it
+          regularly.
+        </p>
+      </div>
+
+      <!-- Demo Version -->
+      <div class="section">
+        <h2>Demo Version</h2>
+        <p>
+          A separate "KIBŌFUND DEMO" listing is available with certain
+          features limited (for example, a reduced number of goals and
+          presets, and some insights unavailable). These limitations are
+          intentional and are not defects. Data created in the demo version
+          is not transferable to the full version.
+        </p>
+      </div>
+
+      <!-- Acceptable Use -->
+      <div class="section">
+        <h2>Acceptable Use</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the App for any unlawful purpose</li>
+          <li>
+            Attempt to interfere with, disassemble, or tamper with the App's
+            code or intended operation
+          </li>
+          <li>
+            Misrepresent your affiliation with KIBŌFUND or use its name,
+            branding, or assets without permission
+          </li>
+        </ul>
+      </div>
+
+      <!-- Availability -->
+      <div class="section">
+        <h2>Availability &amp; Changes</h2>
+        <p>
+          We may update, modify, or discontinue the App or any of its
+          features at any time. We aim to keep the App working reliably, but
+          we do not guarantee uninterrupted or error-free operation.
+        </p>
+      </div>
+
+      <!-- Disclaimer of Warranty -->
+      <div class="section">
+        <h2>Disclaimer of Warranty</h2>
+        <p>
+          The App is provided "as is" and "as available," without warranties
+          of any kind, whether express or implied, including but not limited
+          to warranties of merchantability, fitness for a particular purpose,
+          or non-infringement. We do not warrant that the App will be
+          error-free, secure, or that any figures it calculates will be
+          accurate.
+        </p>
+      </div>
+
+      <!-- Limitation of Liability -->
+      <div class="section">
+        <h2>Limitation of Liability</h2>
+        <p>
+          To the fullest extent permitted by applicable law, KIBŌFUND and its
+          developer shall not be liable for any indirect, incidental,
+          special, consequential, or punitive damages, or any loss of data,
+          arising out of or related to your use of, or inability to use, the
+          App — including data loss from uninstalling the App, device
+          failure, or a missed backup.
+        </p>
+      </div>
+
+      <!-- Termination -->
+      <div class="section">
+        <h2>Termination</h2>
+        <p>
+          You may stop using the App at any time by uninstalling it. We may
+          suspend or discontinue the App at our discretion, including by
+          removing it from app stores, though we will make reasonable efforts
+          to give notice for material changes.
+        </p>
+      </div>
+
+      <!-- Governing Law -->
+      <div class="section">
+        <h2>Governing Law</h2>
+        <p>
+          These Terms are governed by the laws applicable in the developer's
+          jurisdiction, without regard to conflict-of-law principles, except
+          where local consumer-protection law grants you additional rights
+          that cannot be waived.
+        </p>
+      </div>
+
+      <!-- Changes to These Terms -->
+      <div class="section">
+        <h2>Changes to These Terms</h2>
+        <p>
+          We may update these Terms from time to time. If we do, the revised
+          version will be published at this same URL with an updated date.
+          Continued use of the App after changes take effect constitutes
+          acceptance of the revised Terms.
+        </p>
+      </div>
+
+      <!-- Contact -->
+      <div class="section">
+        <h2>Contact</h2>
+        <p>
+          Questions about these Terms can be directed to:
+          <a href="mailto:tokispherion@gmail.com">tokispherion@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="footer" id="footer">
+        © 2026 KIBŌFUND · All rights reserved
+      </div>
+    </div>
+
+    <script>
+      // ── Stars ─────────────────────────────────────────────────────
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function mkStars() {
+        stars = [];
+        const n = Math.floor((canvas.width * canvas.height) / 5000);
+        for (let i = 0; i < n; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.1 + 0.15,
+            phase: Math.random() * Math.PI * 2,
+            speed: Math.random() * 0.006 + 0.002,
+          });
+        }
+      }
+
+      let raf;
+      function draw(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of stars) {
+          const a = 0.15 + 0.65 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(192,202,245,${a})`;
+          ctx.fill();
+        }
+        raf = requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", () => {
+        resize();
+        mkStars();
+      });
+      resize();
+      mkStars();
+      requestAnimationFrame(draw);
+
+      // ── GSAP ──────────────────────────────────────────────────────
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Header entrance
+      gsap.from("#header .logo", {
+        opacity: 0,
+        y: -20,
+        duration: 1,
+        ease: "power3.out",
+      });
+      gsap.from("#header .page-title, #header .last-updated", {
+        opacity: 0,
+        y: 16,
+        duration: 0.9,
+        ease: "power2.out",
+        delay: 0.25,
+        stagger: 0.12,
+      });
+
+      // Sections scroll-reveal
+      gsap.utils.toArray(".section").forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power2.out",
+          delay: i < 2 ? i * 0.1 : 0,
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      // Footer
+      gsap.to("#footer", {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: { trigger: "#footer", start: "top 95%" },
+      });
+    </script>
+  </body>
+</html>
